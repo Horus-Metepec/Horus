@@ -40,54 +40,28 @@
                     </div>
                 </div>
             </div>
-            <!--Mejores y peores rendimientos-->
+            <!-- Mejores y Peores Rendimientos -->
             <div class="shadow p-3 mb-5 bg-light rounded mt-4">
                 <div class="row mb-4">
                     <div class="col-sm-1 col-md-1 col-lg-1"></div>
                     <div class="col-sm-5 col-md-5 col-lg-5">
-                        <h1 class="text-center mb-4" style="background:#60c34c; color:#ffff;">Mejores
-                        </h1>
-                        <ul class="list-group list-group-flush text-center">
-                            <li class="list-group-item bg-light" style="color:#204f7b;">
-                                <h2><img src="img/medalla.png" class="img-fluid me-2" id style="width:25px;"
-                                        alt="">Tesorería
-                                </h2>
-                            </li>
-                            <li class="list-group-item bg-light" style="color:#204f7b;">
-                                <h2>Seguridad Pública</h2>
-                            </li>
-                            <li class="list-group-item bg-light" style="color:#204f7b;">
-                                <h2>Contraloría Municipal</h2>
-                            </li>
+                        <h1 class="text-center mb-4" style="background:#60c34c; color:#ffff;">Mejores</h1>
+                        <ul class="list-group list-group-flush text-center" id="mejoresList">
+                            <!-- Los elementos serán añadidos dinámicamente aquí -->
                         </ul>
                     </div>
                     <div class="col-sm-5 col-md-5 col-lg-5">
-                        <h1 class="text-center mb-4" style="background:#b63329; color:#ffff;">Peores
-                        </h1>
-                        <ul class="list-group list-group-flush text-center">
-                            <li class="list-group-item bg-light" style="color:#204f7b;">
-                                <h2>Servicios Públicos</h2>
-                            </li>
-                            <li class="list-group-item bg-light" style="color:#204f7b;">
-                                <h2>Obras Públicas</h2>
-                            </li>
-                            <li class="list-group-item bg-light" style="color:#204f7b;">
-                                <h2>Medio Ambiente</h2>
-                            </li>
+                        <h1 class="text-center mb-4" style="background:#b63329; color:#ffff;">Peores</h1>
+                        <ul class="list-group list-group-flush text-center" id="peoresList">
+                            <!-- Los elementos serán añadidos dinámicamente aquí -->
                         </ul>
                     </div>
                     <div class="col-sm-1 col-md-1 col-lg-1 d-flex justify-content-end">
-                        <!--
-                        <div style="margin-top: 0; margin-bottom: auto;">
-                            <img src="./img/pdf.png" class="img-fluid me-2"
-                                style="width:calc(1vh + 2.5vw); cursor: pointer;"
-                                title="Ver Mejores y Peores Rendimientos" id="verPdf"
-                                onclick="openPDF('./docs/MR.pdf')">
-                        </div>
-                        -->
+                        <!-- Aquí puedes poner un ícono o un botón para exportar a PDF si es necesario -->
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!--Graficas por dependencia-->
@@ -148,6 +122,64 @@
         function openPDF(url) {
             window.open(url, '_blank');
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            // Función para cargar los datos desde el JSON y actualizar las listas de mejores y peores
+            function cargarDatos() {
+                const url = "https://horus-metepec.github.io/Data/resultados.json";
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Verificar el contenido de los datos
+                        console.log('Datos JSON:', data);
+
+                        const mejores = data["Mejores Rendimientos"] || [];
+                        const peores = data["Peores Rendimientos"] || [];
+
+                        // Limpiar las listas antes de añadir los nuevos datos
+                        document.getElementById('mejoresList').innerHTML = '';
+                        document.getElementById('peoresList').innerHTML = '';
+
+                        // Verificar los elementos que llegan en las listas de "Mejores" y "Peores"
+                        console.log('Mejores:', mejores);
+                        console.log('Peores:', peores);
+
+                        // Añadir los elementos de "Mejores" a la lista
+                        mejores.forEach(function (item, index) {
+                            console.log('Añadiendo a Mejores:', item);
+                            const li = document.createElement('li');
+                            li.classList.add('list-group-item', 'bg-light');
+                            li.style.color = '#204f7b';
+
+                            // Agregar la medalla solo al primer elemento
+                            if (index === 0) {
+                                li.innerHTML = `<h2><img src="img/medalla.png" class="img-fluid me-2" style="width:25px;" alt="">${item.Direccion}</h2>`;
+                            } else {
+                                li.innerHTML = `<h2>${item.Direccion}</h2>`;
+                            }
+
+                            document.getElementById('mejoresList').appendChild(li);
+                        });
+
+                        // Añadir los elementos de "Peores" a la lista
+                        peores.forEach(function (item, index) {
+                            console.log('Añadiendo a Peores:', item);
+                            const li = document.createElement('li');
+                            li.classList.add('list-group-item', 'bg-light');
+                            li.style.color = '#204f7b';
+                            li.innerHTML = `<h2>${item.Direccion}</h2>`;
+                            document.getElementById('peoresList').appendChild(li);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener el JSON:", error);
+                    });
+            }
+
+            // Llamar a la función cargarDatos para cargar los datos y actualizar las listas
+            cargarDatos();
+        });
+
     </script>
 
     <!-- Bootstrap JS (asegúrate de incluir Popper.js si estás usando Bootstrap 4) -->
