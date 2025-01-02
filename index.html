@@ -151,11 +151,14 @@
                             li.classList.add('list-group-item', 'bg-light');
                             li.style.color = '#204f7b';
 
+                            // Eliminar "Dirección de" del principio de la dirección
+                            let direccion = item.Direccion.replace(/^Dirección De\s/, '');
+
                             // Agregar la medalla solo al primer elemento
                             if (index === 0) {
-                                li.innerHTML = `<h2><img src="img/medalla.png" class="img-fluid me-2" style="width:25px;" alt="">${item.Direccion}</h2>`;
+                                li.innerHTML = `<h2><img src="img/medalla.png" class="img-fluid me-2" style="width:25px;" alt="">${direccion}</h2>`;
                             } else {
-                                li.innerHTML = `<h2>${item.Direccion}</h2>`;
+                                li.innerHTML = `<h2>${direccion}</h2>`;
                             }
 
                             document.getElementById('mejoresList').appendChild(li);
@@ -167,7 +170,13 @@
                             const li = document.createElement('li');
                             li.classList.add('list-group-item', 'bg-light');
                             li.style.color = '#204f7b';
-                            li.innerHTML = `<h2>${item.Direccion}</h2>`;
+
+                            // Eliminar "Dirección de" del principio de la dirección
+                            let direccion = item.Direccion.replace(/^Dirección De\s/, '');
+
+                            // Añadir la dirección (sin la palabra "Dirección de")
+                            li.innerHTML = `<h2>${direccion}</h2>`;
+
                             document.getElementById('peoresList').appendChild(li);
                         });
                     })
