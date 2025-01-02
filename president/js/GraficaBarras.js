@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     var colors = ['#204f78', '#b63329'];
+    var resueltos = 0;
+    var pendientes = 0;
 
     // Función para actualizar el tamaño del gráfico y la fuente
     function updateChartSize() {
@@ -70,10 +72,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Función para cargar los datos desde el JSON y actualizar la gráfica
+    function cargarDatos() {
+        const url = "https://horus-metepec.github.io/Data/resultados.json";
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Extraer los datos del JSON
+                resueltos = data["TotResueltos"];
+                pendientes = data["TotPendientes"];
+
+                // Actualizar los datos de la gráfica de barras
+                chart.updateSeries([{
+                    name: 'Total',
+                    data: [resueltos, pendientes]
+                }]);
+                updateChartSize();
+            })
+            .catch(error => {
+                console.error("Error al obtener el JSON:", error);
+            });
+    }
+
     var options = {
         series: [{
             name: 'Total',
-            data: [0, 0]
+            data: [0, 0] // Se actualizará dinámicamente
         }],
         chart: {
             toolbar: {
@@ -132,4 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Agregar un controlador de eventos resize para ajustar el tamaño cuando la ventana cambie
     window.addEventListener('resize', updateChartSize);
+
+    // Cargar los datos al cargar la página
+    cargarDatos();
 });
