@@ -57,7 +57,7 @@ function updateChartSize(chart, screenWidth) {
 }
 
 // Cargar los datos del JSON
-fetch('president/datos.json')
+fetch('https://horus-metepec.github.io/Data/datos.json')
     .then(response => response.json())
     .then(data => {
         // Generar gráficos para cada dependencia
