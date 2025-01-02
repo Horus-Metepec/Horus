@@ -1,5 +1,5 @@
 // Cargar los datos del JSON
-fetch('./datos.json')
+fetch('https://horus-metepec.github.io/Data/datos.json')
     .then(response => response.json())
     .then(data => {
         // Generar gráficos para cada categoría
